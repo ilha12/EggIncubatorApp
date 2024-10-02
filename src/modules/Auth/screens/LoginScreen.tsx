@@ -75,7 +75,7 @@ const LoginScreen = ({navigation}: any) => {
         </TouchableOpacity>
         <Text style={styles.continueText}>or continue with</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate(screenNames.Home)}
+          onPress={() => navigation.navigate(screenNames.Drawer)}
           style={styles.googleButtonContainer}>
           <Image source={images.googleImage} style={styles.googleImage}></Image>
           <Text style={styles.googleText}>Google</Text>

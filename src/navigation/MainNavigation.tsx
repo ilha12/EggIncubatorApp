@@ -2,7 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer, ParamListBase} from '@react-navigation/native';
 import {screenNames} from './ScreenNames';
 import {EggIncubator, LoginScreen, SignupScreen} from '../modules/Auth/screens';
-import {Home} from '../modules/Home/screens';
+import DrawerNavigation from './DrawerNavigation';
 //          Main Navigation
 const MainNavigation = () => {
   const Stack = createNativeStackNavigator<ParamListBase>();
@@ -17,7 +17,7 @@ const MainNavigation = () => {
         />
         <Stack.Screen name={screenNames.Login} component={LoginScreen} />
         <Stack.Screen name={screenNames.SignUp} component={SignupScreen} />
-        <Stack.Screen name={screenNames.Home} component={Home} />
+        <Stack.Screen name={screenNames.Drawer} component={DrawerNavigation} />
       </Stack.Navigator>
     </NavigationContainer>
   );
