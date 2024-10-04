@@ -1,24 +1,15 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer, ParamListBase} from '@react-navigation/native';
-import {screenNames} from './ScreenNames';
-import {EggIncubator, LoginScreen, SignupScreen} from '../modules/Auth/screens';
+import {NavigationContainer} from '@react-navigation/native';
+import AuthNavigation from './AuthNavigation';
 import DrawerNavigation from './DrawerNavigation';
+import {useState} from 'react';
 //          Main Navigation
 const MainNavigation = () => {
-  const Stack = createNativeStackNavigator<ParamListBase>();
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={screenNames.EggIncubator}
-        screenOptions={{headerShown: false}}>
-        <Stack.Screen
-          name={screenNames.EggIncubator}
-          component={EggIncubator}
-        />
-        <Stack.Screen name={screenNames.Login} component={LoginScreen} />
-        <Stack.Screen name={screenNames.SignUp} component={SignupScreen} />
-        <Stack.Screen name={screenNames.Drawer} component={DrawerNavigation} />
-      </Stack.Navigator>
+      {isAuthenticated ? <DrawerNavigation /> : <AuthNavigation />}
+      {/* <AuthNavigation />
+      <DrawerNavigation /> */}
     </NavigationContainer>
   );
 };

@@ -1,4 +1,4 @@
-export enum screenNames {
+enum ROUTES {
   Home = 'Home',
   Login = 'Login',
   SignUp = 'SignUp',
@@ -8,3 +8,5 @@ export enum screenNames {
   Sensors = 'Sensors',
   Drawer = 'Drawer',
 }
+
+export default ROUTES;

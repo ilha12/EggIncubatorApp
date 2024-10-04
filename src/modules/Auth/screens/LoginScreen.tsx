@@ -1,5 +1,6 @@
 import {
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -7,9 +8,10 @@ import {
   View,
 } from 'react-native';
 import {useState} from 'react';
-import {screenNames} from '../../../navigation/ScreenNames';
 import {Ionicons, SimpleLineIcons} from '../../../constants/icons';
 import {colors, fonts, images} from '../../../utils';
+import {ROUTES} from '../../../constants';
+import {s} from 'react-native-size-matters';
 
 const LoginScreen = ({navigation}: any) => {
   const [secureEntery, setSecureEntery] = useState(true);
@@ -17,11 +19,11 @@ const LoginScreen = ({navigation}: any) => {
     navigation.goBack();
   };
   const handleSignup = () => {
-    navigation.navigate(screenNames.SignUp);
+    navigation.navigate(ROUTES.SignUp);
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.backButtonWrapper} onPress={handleGoBack}>
         <Ionicons
           name={'arrow-back-outline'}
@@ -75,7 +77,7 @@ const LoginScreen = ({navigation}: any) => {
         </TouchableOpacity>
         <Text style={styles.continueText}>or continue with</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate(screenNames.Drawer)}
+          onPress={() => navigation.navigate(ROUTES.Drawer)}
           style={styles.googleButtonContainer}>
           <Image source={images.googleImage} style={styles.googleImage}></Image>
           <Text style={styles.googleText}>Google</Text>
@@ -87,7 +89,7 @@ const LoginScreen = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -96,8 +98,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    color: colors.Orange,
-    padding: 20,
+    padding: s(16),
+    backgroundColor: colors.white,
   },
   backButtonWrapper: {
     height: 30,

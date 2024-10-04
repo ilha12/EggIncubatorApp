@@ -7,9 +7,9 @@ import {
   View,
 } from 'react-native';
 import {useState} from 'react';
-import {screenNames} from '../../../navigation/ScreenNames';
 import {Ionicons, SimpleLineIcons} from '../../../constants/icons';
 import {colors, fonts, images} from '../../../utils';
+import {ROUTES} from '../../../constants';
 
 const SignupScreen = ({navigation}: any) => {
   const [secureEntery, setSecureEntery] = useState(true);
@@ -17,7 +17,7 @@ const SignupScreen = ({navigation}: any) => {
     navigation.goBack();
   };
   const handlelogin = () => {
-    navigation.navigate(screenNames.Login);
+    navigation.navigate(ROUTES.Login);
   };
 
   return (
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: colors.Orange,
     padding: 20,
+    backgroundColor: colors.white,
   },
   backButtonWrapper: {
     height: 30,

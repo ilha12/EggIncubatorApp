@@ -1,7 +1,6 @@
-import {StatusBar, StyleProp, StyleSheet, ViewStyle} from 'react-native';
+import {StatusBar, StyleProp, ViewStyle} from 'react-native';
 import {ReactNode} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-
 interface Props {
   children: ReactNode;
   colors: Array<string>;
@@ -18,5 +17,3 @@ const GradientView = ({children, colors, style}: Props) => {
 };
 
 export default GradientView;
-
-const styles = StyleSheet.create({});
