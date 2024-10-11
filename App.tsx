@@ -1,3 +1,4 @@
+import './gesture-handler';
 import MainNavigation from './src/navigation/MainNavigation';
 
 const App = () => {
