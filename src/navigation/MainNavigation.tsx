@@ -4,12 +4,12 @@ import DrawerNavigation from './DrawerNavigation';
 import {useState} from 'react';
 //          Main Navigation
 const MainNavigation = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
     <NavigationContainer>
-      {isAuthenticated ? <DrawerNavigation /> : <AuthNavigation />}
-      {/* <AuthNavigation />
-      <DrawerNavigation /> */}
+      {/* {isAuthenticated ? <DrawerNavigation /> : <AuthNavigation />} */}
+      <AuthNavigation />
+      {/* <DrawerNavigation /> */}
     </NavigationContainer>
   );
 };
