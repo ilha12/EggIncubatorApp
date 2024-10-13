@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "505493446575",
+    "project_id": "eggincubatorapp-9c5aa",
+    "storage_bucket": "eggincubatorapp-9c5aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505493446575:android:43195ddf4acff79565195a",
+        "android_client_info": {
+          "package_name": "com.eggincubatorapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6OBwlGkS8tlycq0JHO-7FCXPqw31cStY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

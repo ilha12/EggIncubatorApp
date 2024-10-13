@@ -1,15 +1,24 @@
 import {
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useState} from 'react';
-import {screenNames} from '../../../navigation/ScreenNames';
+import {useState, useEffect} from 'react';
 import {Ionicons, SimpleLineIcons} from '../../../constants/icons';
 import {colors, fonts, images} from '../../../utils';
+import {ROUTES} from '../../../constants';
+import {s} from 'react-native-size-matters';
+// import statusCodes along with GoogleSignin
+import {
+  GoogleSignin,
+  isErrorWithCode,
+  isSuccessResponse,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 const LoginScreen = ({navigation}: any) => {
   const [secureEntery, setSecureEntery] = useState(true);
@@ -17,11 +26,45 @@ const LoginScreen = ({navigation}: any) => {
     navigation.goBack();
   };
   const handleSignup = () => {
-    navigation.navigate(screenNames.SignUp);
+    navigation.navigate(ROUTES.SignUp);
   };
+  const [state, setState] = useState({userInfo: {}});
+  // Somewhere in your code
+  const signIn = async () => {
+    try {
+      console.log('Hello world');
+      await GoogleSignin.hasPlayServices();
+      console.log('Hello world1');
+      const response = await GoogleSignin.signIn();
+      console.log('Hello world2');
+      if (isSuccessResponse(response)) {
+        setState({userInfo: response.data});
+      } else {
+        // sign in was cancelled by user
+      }
+    } catch (error) {
+      if (isErrorWithCode(error)) {
+        switch (error.code) {
+          case statusCodes.IN_PROGRESS:
+            // operation (eg. sign in) already in progress
+            break;
+          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            // Android only, play services not available or outdated
+            break;
+          default:
+          // some other error happened
+        }
+      } else {
+        // an error that's not related to google sign in occurred
+      }
+    }
+  };
+  useEffect(() => {
+    GoogleSignin.configure();
+  }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.backButtonWrapper} onPress={handleGoBack}>
         <Ionicons
           name={'arrow-back-outline'}
@@ -75,7 +118,7 @@ const LoginScreen = ({navigation}: any) => {
         </TouchableOpacity>
         <Text style={styles.continueText}>or continue with</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate(screenNames.Home)}
+          onPress={() => signIn()}
           style={styles.googleButtonContainer}>
           <Image source={images.googleImage} style={styles.googleImage}></Image>
           <Text style={styles.googleText}>Google</Text>
@@ -87,7 +130,7 @@ const LoginScreen = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -96,8 +139,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    color: colors.Orange,
-    padding: 20,
+    padding: s(16),
+    backgroundColor: colors.white,
   },
   backButtonWrapper: {
     height: 30,

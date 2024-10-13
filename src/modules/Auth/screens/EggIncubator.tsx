@@ -1,16 +1,28 @@
-import {Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {screenNames} from '../../../navigation/ScreenNames';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
 import {colors, fonts, images} from '../../../utils';
+import {ROUTES} from '../../../constants';
+import {s} from 'react-native-size-matters';
+import {GradientView} from '../../../common/components';
 
 const EggIncubator = ({navigation}: any) => {
   const handleLogin = () => {
-    navigation.navigate(screenNames.Login);
+    navigation.navigate(ROUTES.Login);
   };
   const handleSignup = () => {
-    navigation.navigate(screenNames.SignUp);
+    navigation.navigate(ROUTES.SignUp);
   };
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
+
       <Image source={images.logo} style={styles.logo}></Image>
       <Image source={images.man} style={styles.bannerImage}></Image>
       <Text style={styles.title}>IoT Egg Incubator</Text>
@@ -29,7 +41,7 @@ const EggIncubator = ({navigation}: any) => {
           <Text style={styles.SignUpbuttonText}>Sign-Up</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -38,13 +50,15 @@ export default EggIncubator;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: s(16),
+    backgroundColor: colors.white,
   },
   logo: {
     height: 40,
     width: 140,
-    marginVertical: 30,
+    marginVertical: 20,
   },
   bannerImage: {
     marginVertical: 20,
