@@ -32,17 +32,18 @@ const LoginScreen = ({navigation}: any) => {
   // Somewhere in your code
   const signIn = async () => {
     try {
-      console.log('Hello world');
       await GoogleSignin.hasPlayServices();
-      console.log('Hello world1');
       const response = await GoogleSignin.signIn();
-      console.log('Hello world2');
-      if (isSuccessResponse(response)) {
-        setState({userInfo: response.data});
-      } else {
-        // sign in was cancelled by user
-      }
+      console.log(response);
+      // if (isSuccessResponse(response)) {
+      //   console.log(response.data);
+      //   setState({userInfo: response.data});
+      // } else {
+      //   console.log('Cancel login');
+      //   // sign in was cancelled by user
+      // }
     } catch (error) {
+      console.log(error);
       if (isErrorWithCode(error)) {
         switch (error.code) {
           case statusCodes.IN_PROGRESS:
@@ -62,7 +63,6 @@ const LoginScreen = ({navigation}: any) => {
   useEffect(() => {
     GoogleSignin.configure();
   }, []);
-
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.backButtonWrapper} onPress={handleGoBack}>
@@ -135,7 +135,6 @@ const LoginScreen = ({navigation}: any) => {
 };
 
 export default LoginScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
