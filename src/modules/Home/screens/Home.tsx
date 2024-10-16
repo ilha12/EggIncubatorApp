@@ -5,15 +5,26 @@ import Heading from '../components/Heading';
 import {ms, mvs, s} from 'react-native-size-matters';
 import {MatrialIcon} from '../../../constants/icons';
 import {ControllerButton} from '../../../common/components';
+import {useEffect} from 'react';
 const {width, height} = Dimensions.get('window');
 const Home = () => {
+  useEffect(() => {
+    fetch('Api')
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
         colors={colors.bottomsheetGradient}
         style={styles.subContainere}>
-        <Heading title="Temperature" value={0.0} tag="c" />
-        <Heading title="Humidity" value={0.0} tag="%" />
+        <Heading title="Temperature" value={35.0} tag="c" />
+        <Heading title="Humidity" value={49.6} tag="%" />
         <View style={styles.controlPanel}>
           <View style={styles.row}>
             <MatrialIcon

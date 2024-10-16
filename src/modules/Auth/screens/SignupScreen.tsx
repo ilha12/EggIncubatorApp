@@ -10,6 +10,8 @@ import {useState} from 'react';
 import {Ionicons, SimpleLineIcons} from '../../../constants/icons';
 import {colors, fonts, images} from '../../../utils';
 import {ROUTES} from '../../../constants';
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignupScreen = ({navigation}: any) => {
   const [secureEntery, setSecureEntery] = useState(true);
@@ -18,6 +20,43 @@ const SignupScreen = ({navigation}: any) => {
   };
   const handlelogin = () => {
     navigation.navigate(ROUTES.Login);
+  };
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [error, setError] = useState('');
+  const handleSignup = () => {
+    navigation.navigate(ROUTES.SignUp);
+  };
+  const [state, setState] = useState({userInfo: {}});
+
+  // Somewhere in your code
+  const signUp = async () => {
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(sucess => {
+        let user = JSON.stringify(sucess);
+        AsyncStorage.setItem('user', user);
+        console.log(sucess);
+        console.log('User account created & signed in!');
+        navigation.navigate(ROUTES.Drawer);
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          setError('That email address is already in use!');
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          setError('That email address is invalid!');
+          console.log('That email address is invalid!');
+        }
+
+        console.error(error);
+      });
+    if (email != '') {
+      setError('');
+    }
   };
 
   return (
@@ -44,7 +83,10 @@ const SignupScreen = ({navigation}: any) => {
             style={styles.textInput}
             placeholder="Enter your email"
             placeholderTextColor={colors.secondary}
-            keyboardType="email-address"></TextInput>
+            keyboardType="email-address"
+            value={email}
+            onChangeText={prop => setEmail(prop)}
+          />
         </View>
         <View style={styles.inputContainer}>
           <SimpleLineIcons
@@ -67,7 +109,10 @@ const SignupScreen = ({navigation}: any) => {
             style={styles.textInput}
             placeholder="Enter your Password"
             placeholderTextColor={colors.secondary}
-            secureTextEntry={secureEntery}></TextInput>
+            secureTextEntry={secureEntery}
+            value={password}
+            onChangeText={prop => setPassword(prop)}
+          />
           <TouchableOpacity
             onPress={() => {
               setSecureEntery(prev => !prev);
@@ -78,7 +123,12 @@ const SignupScreen = ({navigation}: any) => {
               color={colors.secondary}></SimpleLineIcons>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.loginButtonWrapper}>
+        <View>
+          <Text style={styles.error}>{error}</Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => signUp()}
+          style={styles.loginButtonWrapper}>
           <Text style={styles.loginText}>Signup</Text>
         </TouchableOpacity>
         <Text style={styles.continueText}>or continue with</Text>
@@ -195,5 +245,9 @@ const styles = StyleSheet.create({
   },
   accountText: {
     fontFamily: fonts.Regular,
+  },
+  error: {
+    color: colors.red,
+    textAlign: 'center',
   },
 });

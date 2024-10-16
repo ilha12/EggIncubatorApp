@@ -6,8 +6,25 @@ import {
 import {GradientView} from '../common/components';
 import {colors, fonts, images} from '../utils';
 import {ms, mvs, s} from 'react-native-size-matters';
+import {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CustomDrawer = (props: any) => {
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    let getUserValue = async () => {
+      let user = await AsyncStorage.getItem('user');
+      if (user) {
+        JSON.parse(user);
+        setUser(user);
+      }
+
+      return user;
+    };
+    console.log(getUserValue());
+    getUserValue();
+  }, []);
+
   return (
     <GradientView colors={colors.gradientPrimary} style={styles.container}>
       <DrawerContentScrollView {...props}>
