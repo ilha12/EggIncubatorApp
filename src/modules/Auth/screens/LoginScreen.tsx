@@ -12,6 +12,7 @@ import {Ionicons, SimpleLineIcons} from '../../../constants/icons';
 import {colors, fonts, images} from '../../../utils';
 import {ROUTES} from '../../../constants';
 import {s} from 'react-native-size-matters';
+import auth from '@react-native-firebase/auth';
 // import statusCodes along with GoogleSignin
 import {
   GoogleSignin,
@@ -19,9 +20,14 @@ import {
   isSuccessResponse,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import {useInputValidation} from '6pp';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({navigation}: any) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [secureEntery, setSecureEntery] = useState(true);
+  const [error, setError] = useState('');
   const handleGoBack = () => {
     navigation.goBack();
   };
@@ -29,35 +35,32 @@ const LoginScreen = ({navigation}: any) => {
     navigation.navigate(ROUTES.SignUp);
   };
   const [state, setState] = useState({userInfo: {}});
+
   // Somewhere in your code
   const signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const response = await GoogleSignin.signIn();
-      console.log(response);
-      // if (isSuccessResponse(response)) {
-      //   console.log(response.data);
-      //   setState({userInfo: response.data});
-      // } else {
-      //   console.log('Cancel login');
-      //   // sign in was cancelled by user
-      // }
-    } catch (error) {
-      console.log(error);
-      if (isErrorWithCode(error)) {
-        switch (error.code) {
-          case statusCodes.IN_PROGRESS:
-            // operation (eg. sign in) already in progress
-            break;
-          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-            // Android only, play services not available or outdated
-            break;
-          default:
-          // some other error happened
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(sucess => {
+        let user = JSON.stringify(sucess);
+        AsyncStorage.setItem('user', user);
+        console.log('User account created & signed in!');
+        navigation.navigate(ROUTES.Drawer);
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          setError('That email address is already in use!');
+          console.log('That email address is already in use!');
         }
-      } else {
-        // an error that's not related to google sign in occurred
-      }
+
+        if (error.code === 'auth/invalid-email') {
+          setError('That email address is invalid!');
+          console.log('That email address is invalid!');
+        }
+
+        console.error(error);
+      });
+    if (email != '') {
+      setError('');
     }
   };
   useEffect(() => {
@@ -88,7 +91,10 @@ const LoginScreen = ({navigation}: any) => {
             style={styles.textInput}
             placeholder="Enter your email"
             placeholderTextColor={colors.secondary}
-            keyboardType="email-address"></TextInput>
+            keyboardType="email-address"
+            value={email}
+            onChangeText={prop => setEmail(prop)}
+          />
         </View>
         <View style={styles.inputContainer}>
           <SimpleLineIcons
@@ -99,7 +105,9 @@ const LoginScreen = ({navigation}: any) => {
             style={styles.textInput}
             placeholder="Enter your Password"
             placeholderTextColor={colors.secondary}
-            secureTextEntry={secureEntery}></TextInput>
+            secureTextEntry={secureEntery}
+            value={password}
+            onChangeText={props => setPassword(props)}></TextInput>
           <TouchableOpacity
             onPress={() => {
               setSecureEntery(prev => !prev);
@@ -110,10 +118,15 @@ const LoginScreen = ({navigation}: any) => {
               color={colors.secondary}></SimpleLineIcons>
           </TouchableOpacity>
         </View>
+        <View>
+          <Text style={styles.error}>{error}</Text>
+        </View>
         <TouchableOpacity>
           <Text style={styles.forgetPasswordText}>Forget Password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButtonWrapper}>
+        <TouchableOpacity
+          onPress={() => signIn()}
+          style={styles.loginButtonWrapper}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
         <Text style={styles.continueText}>or continue with</Text>
@@ -230,5 +243,9 @@ const styles = StyleSheet.create({
   },
   accountText: {
     fontFamily: fonts.Regular,
+  },
+  error: {
+    color: colors.red,
+    textAlign: 'center',
   },
 });

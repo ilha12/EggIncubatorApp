@@ -8,8 +8,8 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
       {/* {isAuthenticated ? <DrawerNavigation /> : <AuthNavigation />} */}
-      {/* <AuthNavigation /> */}
-      <DrawerNavigation />
+      <AuthNavigation />
+      {/* <DrawerNavigation /> */}
     </NavigationContainer>
   );
 };
